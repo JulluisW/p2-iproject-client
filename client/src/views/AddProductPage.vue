@@ -14,8 +14,8 @@
         <textarea name="" id=""></textarea>
       </div>
       <div style="display:flex; width: 40%; justify-content: space-between;">
-        <button type="submit" class="submit-shop">Submit</button>
-        <button type="submit" class="cancel-add-from">Cancel</button>
+        <button type="submit" @click.prevent="submitAddProduct" class="submit-shop">Submit</button>
+        <button type="submit" @click.prevent="cancelAddProduct"  class="cancel-add-from">Cancel</button>
       </div>
       
     </form>
@@ -24,7 +24,20 @@
 
 <script>
 export default {
-  name: "AddProductPage"
+  name: "AddProductPage",
+  created(){
+    if(localStorage.access_token) {
+        this.$store.commit("MUTATE_IS_LOGIN",true)
+      }
+  },
+  methods:{
+    submitAddProduct(){
+      console.log("submit");
+    },
+    cancelAddProduct(){
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 

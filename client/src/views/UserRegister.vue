@@ -6,10 +6,10 @@
     <h3 style="margin: 0px 0">Please fill form</h3>
 
     <form id="register-form">
-      <input type="text" placeholder="Email Address">
-      <input type="number" placeholder="Phone Number">
-      <input type="password" placeholder="Password">
-      <button type="submit">Submit</button>
+      <input type="text" placeholder="Email Address" v-model="registerEmail">
+      <input type="number" placeholder="Phone Number" v-model="registerPhone">
+      <input type="password" placeholder="Password" v-model="registerPassword">
+      <button @click.prevent="register" type="submit">Submit</button>
     </form>
 
     <p>Already have an Account? <a @click.prevent="moveToLogin" href="">Log in Here!</a></p>
@@ -19,11 +19,52 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
 export default {
   name: "UserRegister",
+  data(){
+    return{
+      registerEmail:"",
+      registerPhone:"",
+      registerPassword:""
+    }
+  },
+  computed:{
+    phoneNumberFormatter(){
+      if(this.registerPhone[0] == 0){
+        return 62 + this.registerPhone.slice(1)
+      }
+      return this.registerPhone
+    }
+  },
   methods:{
+    ...mapActions(['doregister', 'phoneVerification']),
     moveToLogin() {
       this.$router.push('/login')
+    },
+    async register() {
+
+      let payloadVerification = {
+        phone: this.phoneNumberFormatter
+      }
+      let registerPayload = {
+        email: this.registerEmail,
+        phoneNumber: this.phoneNumberFormatter,
+        password: this.registerPassword,
+      }
+      try {
+        const resp = await this.phoneVerification(payloadVerification)
+        if(resp !== true){
+          throw {name: "Invalid Phone Number"}
+        }
+        const newUser = await this.doregister(registerPayload);
+        if(typeof newUser == 'object'){
+          this.$router.push('/login')
+          console.log('Success register');
+        }
+      } catch (error) {
+        console.log(error.name);
+      }
     }
   }
 }

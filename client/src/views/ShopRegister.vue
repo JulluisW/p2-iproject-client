@@ -3,14 +3,14 @@
 
     <h2><i class="fas fa-store" style="font-size:35px"></i>  Let's set up your shop!</h2>
     <form action="" id="form-set-up-shop">
-      <input type="text" placeholder="Shop Name">
-      <input type="text" placeholder="Address">
-      <input type="text" placeholder="Shop Image/Logo Url">
-      <input type="text" placeholder="Motto">
-      <input type="text" placeholder="Category">
+      <input v-model="shopName" type="text" placeholder="Shop Name">
+      <input v-model="shopAddress" type="text" placeholder="Address">
+      <input v-model="shopImageUrl" type="text" placeholder="Shop Image/Logo Url">
+      <input v-model="shopMotto" type="text" placeholder="Motto">
+      <input v-model="shopCategory" type="text" placeholder="Category">
       <div style="display:flex; width: 40%; justify-content: space-between;">
-        <button type="submit" class="submit-shop">Submit</button>
-        <button type="submit" class="setuplater-shop">Set up later</button>
+        <button @click.prevent="submitShop" type="submit" class="submit-shop">Submit</button>
+        <button @click.prevent="setUpLater" type="submit" class="setuplater-shop">Set up later</button>
       </div>
       
     </form>
@@ -20,7 +20,46 @@
 
 <script>
 export default {
-  name: "ShopRegister"
+  name: "ShopRegister",
+  data(){
+    return{
+      shopName: "",
+      shopAddress: "",
+      shopImageUrl: "",
+      shopMotto: "",
+      shopCategory: "",
+    }
+  },
+  methods:{
+    async submitShop() {
+      const payload = {
+        name : this.shopName,
+        imageUrl : this.shopImageUrl,
+        motto : this.shopMotto,
+        address : this.shopAddress,
+        category : this.shopCategory,
+      }
+      try {
+        const newShop = await this.$store.dispatch("doRegisterShop", payload)
+        if(typeof newShop == 'object'){
+          this.$store.dispatch("doRegisterShop", localStorage.userId)
+          this.$router.push('/');
+          console.log('Success register');
+        }
+
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    setUpLater() {
+      this.$router.push('/');
+    }
+  },
+  created(){
+    if(localStorage.access_token) {
+        this.$store.commit("MUTATE_IS_LOGIN",true)
+      }
+  }
 }
 </script>
 

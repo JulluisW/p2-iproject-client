@@ -1,39 +1,65 @@
 <template>
   <div class="container-form">
-    <img src="../assets/E-Bon.png" alt="">
+    <img src="../assets/E-Bon.png" alt="" />
     <h1>Welcome to E-BON!</h1>
     <h3 style="margin: 0px 0">Log In to continue</h3>
 
     <form id="login-form">
-      <input type="email" placeholder="Email Address">
-      <input type="password" placeholder="Password">
-      <button type="submit">Log In</button>
+      <input v-model="loginEmail" type="email" placeholder="Email Address" />
+      <input v-model="loginPassword" type="password" placeholder="Password" />
+      <button type="submit" @click.prevent="login">Log In</button>
     </form>
 
     <p>Don't have an account? <a @click.prevent="moveToRegister" href="">Register here!</a></p>
-    
   </div>
 </template>
 
 <script>
 export default {
   name: "Login",
-  methods:{
+  data() {
+    return {
+      loginEmail: "",
+      loginPassword: "",
+    };
+  },
+  methods: {
     moveToRegister() {
-      this.$router.push('/user/register')
-    }
-  }
-}
+      this.$router.push("/user/register");
+    },
+    async login() {
+      let payload = {
+        email: this.loginEmail,
+        password: this.loginPassword,
+      };
+      try {
+        await this.$store.dispatch("dologin", payload);
+        this.$store.state.isLoggedIn = true;
+        const shop = await this.$store.dispatch("getShopByUserId", localStorage.userId);
+        // console.log(shop);
+        if(shop == null) {
+          this.$router.push("/shop/register");
+          } else {
+          this.$router.push("/");
+          localStorage.shopId = shop.id
+          this.$store.commit("MUTATE_HAS_SHOP", true)
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
+};
 </script>
 
 <style>
-.container-form{
+.container-form {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 6%;
   width: 600px;
   border-radius: 10%;
   background-color: white;
@@ -67,7 +93,7 @@ export default {
   font-size: 15px;
 }
 
-#login-form input:hover{
+#login-form input:hover {
   border: 1px solid var(--primary);
 }
 
@@ -82,5 +108,4 @@ export default {
   width: fit-content;
   margin-top: 10px;
 }
-
 </style>

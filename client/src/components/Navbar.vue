@@ -5,9 +5,10 @@
 
 
     <ul id="navbar-options">
-      <li class="text-2xl">Home</li>
-      <li>My Products</li>
-      <li>Order History</li>
+      <li class="text-2xl" @click.prevent="toHome">Home</li>
+      <li @click.prevent="toMyProduct" >My Products</li>
+      <li @click.prevent="toOrderHistory">Order History</li>
+      <li @click.prevent="testpayment">TEST PAYMENT</li>
     </ul>
 
     <div class="dropdown">
@@ -15,10 +16,10 @@
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
-      <a href="#">Edit Profile</a>
-      <a href="#">Set up Shop</a>
-      <a href="#">Edit Your Shop</a>
-      <a href="#">Sign Out</a>
+      <a href="#" @click.prevent="toEditProfile">Edit Profile</a>
+      <a href="#" @click.prevent="toRegisterShop">Set up Shop</a>
+      <a href="#" @click.prevent="toEditShop">Edit Your Shop</a>
+      <a href="#" @click.prevent="SignOut">Sign Out</a>
     </div>
   </div> 
 
@@ -34,6 +35,34 @@ export default {
   computed:{
     ...mapState(["isLoggedIn"])
 
+  },
+  methods:{
+    SignOut(){
+      localStorage.clear()
+      this.$store.state.isLoggedIn = false
+      this.$router.push('/login')
+    },
+    toHome(){
+      this.$router.push('/')
+    },
+    toMyProduct(){
+      this.$router.push('/product')
+    },
+    toOrderHistory(){
+      this.$router.push('/order/history')
+    },
+    toEditProfile() {
+      this.$router.push('/')
+    },
+    toRegisterShop() {
+      this.$router.push('/shop/register')
+    },
+    toEditShop(){
+      this.$router.push('/shop/edit')
+    },
+    testpayment(){
+      this.$store.dispatch("midtransPayment");
+    }
   }
 }
 </script>

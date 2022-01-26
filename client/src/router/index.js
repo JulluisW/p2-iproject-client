@@ -63,6 +63,11 @@ const routes = [
     name: 'OrderHistoryList',
     component: () => import('../views/OrderHistoryList.vue')
   },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: () => import('../views/Payment.vue')
+  },
 ]
 
 const router = new VueRouter({

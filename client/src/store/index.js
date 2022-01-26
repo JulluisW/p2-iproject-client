@@ -8,7 +8,10 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     hasShop: false,
+    currentProducts: [],
+    currentUserOrders:[],
     url: "http://localhost:3000",
+    paymentUrl: ""
   },
   mutations: {
     MUTATE_IS_LOGIN(state, payload) {
@@ -17,6 +20,15 @@ export default new Vuex.Store({
     MUTATE_HAS_SHOP(state, payload) {
       state.hasShop = payload;
     },
+    MUTATE_PRODUCTS(state,payload) {
+      state.currentProducts = payload
+    },
+    MUTATE_ORDERS(state,payload) {
+      state.currentUserOrders = payload
+    },
+    MUTATE_PAYMENT_URL(state, payload) {
+      state.paymentUrl = payload
+    }
   },
   actions: {
     async dologin(context, payload) {
@@ -85,7 +97,46 @@ export default new Vuex.Store({
         return error.response.data.message
       }
     },
-
+    async fetchProducts(context){
+      try {
+        const resp = await axios.get(`${context.state.url}/product`,{
+          headers:{
+            access_token : localStorage.access_token
+          }
+        })
+        // console.log(resp.data);
+        context.commit("MUTATE_PRODUCTS", resp.data)
+        return resp.data
+      } catch (error) {
+        return error.response.data.message
+      }
+    },
+    async postOrder(context,payload) {
+      try {
+        const resp = await axios.post(`${context.state.url}/order/add`, payload,{
+          headers:{
+            access_token: localStorage.access_token
+          }
+        })
+        return resp.data
+      } catch (error) {
+        // console.log(error,"<<<<<<<<");
+        return error.response.data.message
+      }
+    },
+    async fectchOrder(context) {
+        try {
+          const resp = await axios.get(`${context.state.url}/order`,{
+          headers:{
+            access_token: localStorage.access_token
+          }
+        })
+        context.commit("MUTATE_ORDERS", resp.data)
+        return resp.data
+        } catch (error) {
+          return error.response.data.message
+        }
+    },
     async midtransPayment(context,payload) {
       try {
         const resp = await axios.post(`${context.state.url}/payment`,payload,{
@@ -93,9 +144,7 @@ export default new Vuex.Store({
           access_token: localStorage.access_token
         }
       });
-
-      console.log(resp.data);
-
+      context.commit("MUTATE_PAYMENT_URL", resp.data.redirect_url)
       } catch (error) {
         console.log(error.response.data);
       }

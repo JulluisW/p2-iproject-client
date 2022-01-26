@@ -43,6 +43,7 @@ export default {
         const newShop = await this.$store.dispatch("doRegisterShop", payload)
         if(typeof newShop == 'object'){
           this.$store.dispatch("doRegisterShop", localStorage.userId)
+          localStorage.shopId = newShop.id
           this.$router.push('/');
           console.log('Success register');
         }

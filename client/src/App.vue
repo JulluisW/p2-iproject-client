@@ -21,7 +21,8 @@ export default {
   height: 100%;
   background-image: url('./assets/Wallpaper.jpg');
   background-size: cover;
-  position: fixed;
+  background-repeat: no-repeat;
+  position:fixed;
   right: 0;
   left: 0;
   top: 0;

@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     hasShop: false,
+    currentProducts: [],
     url: "http://localhost:3000",
   },
   mutations: {
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     MUTATE_HAS_SHOP(state, payload) {
       state.hasShop = payload;
     },
+    MUTATE_PRODUCTS(state,payload) {
+      state.currentProducts = payload
+    }
   },
   actions: {
     async dologin(context, payload) {
@@ -85,7 +89,20 @@ export default new Vuex.Store({
         return error.response.data.message
       }
     },
-
+    async fetchProducts(context){
+      try {
+        const resp = await axios.get(`${context.state.url}/product`,{
+          headers:{
+            access_token : localStorage.access_token
+          }
+        })
+        console.log(resp.data);
+        context.commit("MUTATE_PRODUCTS", resp.data)
+        return resp.data
+      } catch (error) {
+        return error.response.data.message
+      }
+    },
     async midtransPayment(context,payload) {
       try {
         const resp = await axios.post(`${context.state.url}/payment`,payload,{

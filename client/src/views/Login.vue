@@ -40,9 +40,10 @@ export default {
         if(shop == null) {
           this.$router.push("/shop/register");
           } else {
-          this.$router.push("/");
+          this.$store.dispatch("fetchProducts")
           localStorage.shopId = shop.id
           this.$store.commit("MUTATE_HAS_SHOP", true)
+          this.$router.push("/");
         }
       } catch (error) {
         console.log(error);

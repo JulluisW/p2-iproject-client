@@ -2,16 +2,16 @@
   <div id="add-product-form">
     <h2><i class="far fa-plus-square" style="font-size:35px;"></i>   Fill the form to add your Products!</h2>
     <form action="" id="form-add-product">
-      <input type="text" placeholder="Product Name">
-      <input type="text" placeholder="Product Brand">
-      <input type="text" placeholder="Product Image Url">
+      <input v-model="prodName" type="text" placeholder="Product Name">
+      <input v-model="prodBrand" type="text" placeholder="Product Brand">
+      <input v-model="prodImg" type="text" placeholder="Product Image Url">
       <div id="price-container">
-        <input type="number" placeholder="Price">
-        <input type="number" placeholder="Bulk Price">
+        <input v-model="prodPrice" type="number" placeholder="Price">
+        <input v-model="prodBulkPrice" type="number" placeholder="Bulk Price">
       </div>
       <div id="text-area-container">
         <label for="">Product Description:</label>
-        <textarea name="" id=""></textarea>
+        <textarea v-model="prodDesc" name="" id=""></textarea>
       </div>
       <div style="display:flex; width: 40%; justify-content: space-between;">
         <button type="submit" @click.prevent="submitAddProduct" class="submit-shop">Submit</button>
@@ -25,14 +25,43 @@
 <script>
 export default {
   name: "AddProductPage",
+  data(){
+    return{
+      prodName: "",
+      prodBrand: "",
+      prodImg: "",
+      prodPrice: "",
+      prodBulkPrice: "",
+      prodDesc: "",
+    }
+  },
   created(){
     if(localStorage.access_token) {
         this.$store.commit("MUTATE_IS_LOGIN",true)
       }
   },
   methods:{
-    submitAddProduct(){
-      console.log("submit");
+    async submitAddProduct(){
+      const payload ={
+      name: this.prodName,
+      description: this.prodBrand,
+      price: this.prodPrice,
+      bulkPrice: this.prodBulkPrice,
+      brand: this.prodBrand,
+      imageUrl: this.prodImg,
+      shopId: localStorage.shopId,
+      }
+      try {
+        const resp = await this.$store.dispatch("doAddProduct", payload)
+        if(typeof resp == 'object'){
+          this.$router.push('/product')
+          console.log("Add product success");
+        } else{
+          throw {name: resp}
+        }
+      } catch (error) {
+        console.log(error.name);
+      }
     },
     cancelAddProduct(){
       this.$router.push('/')

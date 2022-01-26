@@ -73,6 +73,19 @@ export default new Vuex.Store({
         return error.response.data.message;
       }
     },
+    async doAddProduct(context, payload){
+      try {
+        const resp = await axios.post(`${context.state.url}/product/add`,payload,{
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+        return resp.data
+      } catch (error) {
+        return error.response.data.message
+      }
+    },
+
     async midtransPayment(context,payload) {
       try {
         const resp = await axios.post(`${context.state.url}/payment`,payload,{

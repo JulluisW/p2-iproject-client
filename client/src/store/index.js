@@ -24,6 +24,25 @@ export default new Vuex.Store({
       } catch (error) {
         return error.response.data.message
       }
+    },
+    async doregister(context, payload) {
+      try {
+        const resp = await axios.post(`${context.state.url}/register`, payload)
+        return resp.data
+      } catch (error) {
+        console.log(error.response.data.message);
+        return error.response.data.message
+      }
+    },
+    async phoneVerification(context, payload) {
+      try {
+        const resp = await axios.post(`${context.state.url}/register/phoneValidations`, payload)
+        // console.log(resp.data.valid);
+        return resp.data.valid
+        
+      } catch (error) {
+        return error.response.data.message
+      }
     }
   },
   modules: {

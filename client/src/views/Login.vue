@@ -41,6 +41,7 @@ export default {
           this.$router.push("/shop/register");
           } else {
           this.$store.dispatch("fetchProducts")
+          this.$store.dispatch("fectchOrder")
           localStorage.shopId = shop.id
           this.$store.commit("MUTATE_HAS_SHOP", true)
           this.$router.push("/");

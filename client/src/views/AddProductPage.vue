@@ -44,7 +44,7 @@ export default {
     async submitAddProduct(){
       const payload ={
       name: this.prodName,
-      description: this.prodBrand,
+      description: this.prodDesc,
       price: this.prodPrice,
       bulkPrice: this.prodBulkPrice,
       brand: this.prodBrand,

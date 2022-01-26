@@ -8,7 +8,6 @@
       <li class="text-2xl" @click.prevent="toHome">Home</li>
       <li @click.prevent="toMyProduct" >My Products</li>
       <li @click.prevent="toOrderHistory">Order History</li>
-      <li @click.prevent="testpayment">TEST PAYMENT</li>
     </ul>
 
     <div class="dropdown">
@@ -17,8 +16,8 @@
     </button>
     <div class="dropdown-content">
       <a href="#" @click.prevent="toEditProfile">Edit Profile</a>
-      <a href="#" @click.prevent="toRegisterShop">Set up Shop</a>
-      <a href="#" @click.prevent="toEditShop">Edit Your Shop</a>
+      <a href="#" @click.prevent="toRegisterShop" v-if="hasShop">Set up Shop</a>
+      <a href="#" @click.prevent="toEditShop" v-if="!hasShop">Edit Your Shop</a>
       <a href="#" @click.prevent="SignOut">Sign Out</a>
     </div>
   </div> 
@@ -33,7 +32,7 @@ import {mapState} from 'vuex'
 export default {
   name: "Navbar",
   computed:{
-    ...mapState(["isLoggedIn"])
+    ...mapState(["isLoggedIn", "hasShop"])
 
   },
   methods:{

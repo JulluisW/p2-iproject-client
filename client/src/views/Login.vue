@@ -5,9 +5,9 @@
     <h3 style="margin: 0px 0">Log In to continue</h3>
 
     <form id="login-form">
-      <input type="email" placeholder="Email Address">
-      <input type="password" placeholder="Password">
-      <button type="submit">Log In</button>
+      <input v-model="loginEmail" type="email" placeholder="Email Address">
+      <input v-model="loginPassword" type="password" placeholder="Password">
+      <button type="submit" @click.prevent="login">Log In</button>
     </form>
 
     <p>Don't have an account? <a @click.prevent="moveToRegister" href="">Register here!</a></p>
@@ -18,9 +18,27 @@
 <script>
 export default {
   name: "Login",
+  data(){
+    return{
+      loginEmail: "",
+      loginPassword: "",
+    }
+  },
   methods:{
     moveToRegister() {
       this.$router.push('/user/register')
+    },
+    async login() {
+      let payload = {
+        email: this.loginEmail,
+        password: this.loginPassword
+      }
+      try {
+        await this.$store.dispatch("dologin",payload)
+        this.$router.push('/')
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
@@ -33,7 +51,7 @@ export default {
   align-items: center;
   justify-content: start;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 6%;
   width: 600px;
   border-radius: 10%;
   background-color: white;

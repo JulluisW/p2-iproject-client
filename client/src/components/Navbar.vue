@@ -1,5 +1,5 @@
 <template>
-  <div id="nav" class="">
+  <div id="nav" class="" v-if="isLoggedIn">
 
     <img id="logo" src="../assets/E-Bon.png" alt="Logo">
 
@@ -16,6 +16,8 @@
     </button>
     <div class="dropdown-content">
       <a href="#">Edit Profile</a>
+      <a href="#">Set up Shop</a>
+      <a href="#">Edit Your Shop</a>
       <a href="#">Sign Out</a>
     </div>
   </div> 
@@ -26,8 +28,13 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
-  name: "Navbar"
+  name: "Navbar",
+  computed:{
+    ...mapState(["isLoggedIn"])
+
+  }
 }
 </script>
 
@@ -74,7 +81,7 @@ export default {
 }
 
 .dropdown .dropbtn {
-  padding: 36.5px 20px 36.5px 12px;
+  padding: 36.5px 38px;
   font-size: 23px;  
   border: none;
   outline: none;

@@ -54,16 +54,31 @@ export default {
       }
       try {
         const resp = await this.phoneVerification(payloadVerification)
+        console.log(resp);
         if(resp !== true){
           throw {name: "Invalid Phone Number"}
         }
         const newUser = await this.doregister(registerPayload);
         if(typeof newUser == 'object'){
           this.$router.push('/login')
-          console.log('Success register');
+          this.$swal({
+            icon: 'success',
+            title: 'Nice',
+            text: `Success register! Please Login First!`,
+          });
+        } else {
+          this.$swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: newUser,
+          });
         }
       } catch (error) {
-        console.log(error.name);
+        this.$swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: error.name,
+          });
       }
     }
   }

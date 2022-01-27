@@ -37,9 +37,19 @@ export default {
         this.$store.state.isLoggedIn = true;
         const shop = await this.$store.dispatch("getShopByUserId", localStorage.userId);
         // console.log(shop);
-        if(shop == null) {
+        if(shop == null || shop == undefined || !shop) {
           this.$router.push("/shop/register");
+          this.$swal('Please set up your shop first!');
+          this.$swal({
+            icon: 'info',
+            title: 'First Step',
+            text: 'Please set up your shop first!',
+          });
           } else {
+          this.$swal({
+            title: 'Welcome Back',
+            text: `${this.loginEmail}`,
+          });
           this.$store.dispatch("fetchProducts")
           this.$store.dispatch("fectchOrder")
           localStorage.shopId = shop.id
@@ -47,7 +57,11 @@ export default {
           this.$router.push("/");
         }
       } catch (error) {
-        console.log(error);
+        this.$swal({
+            icon: 'error',
+            title: 'Oops...',
+            text: error,
+          });
       }
     },
   },

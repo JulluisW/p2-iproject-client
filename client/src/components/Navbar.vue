@@ -37,9 +37,24 @@ export default {
   },
   methods:{
     SignOut(){
-      localStorage.clear()
-      this.$store.state.isLoggedIn = false
-      this.$router.push('/login')
+      this.$swal({
+      title: 'Are you sure to Sign out?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sign out'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear()
+        this.$store.state.isLoggedIn = false
+        this.$router.push('/login')
+          this.$swal(
+          'See you again soon!'
+        )
+      }
+    });
+      
     },
     toHome(){
       this.$router.push('/')

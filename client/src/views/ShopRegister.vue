@@ -45,11 +45,25 @@ export default {
           this.$store.dispatch("doRegisterShop", localStorage.userId)
           localStorage.shopId = newShop.id
           this.$router.push('/');
-          console.log('Success register');
+          this.$swal({
+            icon: 'success',
+            title: 'Yay!!',
+            text: `Shop has been set up!`,
+          });
+        }
+        else {
+          this.$swal({
+            icon: 'error',
+            text: newShop,
+          });
         }
 
       } catch (error) {
-        console.log(error);
+        this.$swal({
+            icon: 'error',
+            title: 'Oopps..',
+            text: error,
+          });
       }
     },
     setUpLater() {

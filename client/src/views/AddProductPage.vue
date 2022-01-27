@@ -55,12 +55,21 @@ export default {
         const resp = await this.$store.dispatch("doAddProduct", payload)
         if(typeof resp == 'object'){
           this.$router.push('/product')
-          console.log("Add product success");
+          this.$swal({
+            icon: 'success',
+            title: 'Yay!!',
+            text: `Add Product Success!`,
+          });
         } else{
           throw {name: resp}
         }
       } catch (error) {
-        console.log(error.name);
+        // console.log(error.name);
+        this.$swal({
+            icon: 'error',
+            title: 'Oopps...',
+            text: error.name,
+          });
       }
     },
     cancelAddProduct(){

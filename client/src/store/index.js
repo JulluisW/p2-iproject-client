@@ -10,8 +10,9 @@ export default new Vuex.Store({
     hasShop: false,
     currentProducts: [],
     currentUserOrders:[],
+    // url: "https://e-bon-iproject.herokuapp.com"
     url: "http://localhost:3000",
-    paymentUrl: ""
+    paymentUrl: "",
   },
   mutations: {
     MUTATE_IS_LOGIN(state, payload) {

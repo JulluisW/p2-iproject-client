@@ -53,13 +53,22 @@ export default {
       try {
         const resp = await this.$store.dispatch("postOrder",payload)
         if(typeof resp == 'object') {
-          console.log("Add Order Success");
+          // console.log("Add Order Success");
+          this.$swal({
+            icon: 'success',
+            title: 'Aight!!',
+            text: `Order has been added!`,
+          });
           this.$router.push("/")
         } else {
           throw {name: resp}
         }
       } catch (error) {
-        console.log(error.name);
+        // console.log(error.name);
+        this.$swal({
+            icon: 'warning',
+            text: error.name,
+          });
       }
     }
   },

@@ -9,9 +9,10 @@ export default new Vuex.Store({
     isLoggedIn: false,
     hasShop: false,
     currentProducts: [],
-    currentUserOrders:[],
-    // url: "https://e-bon-iproject.herokuapp.com"
+    currentUserOrders: [],
+    currentUserOrdersHistory: [],
     url: "https://e-bon-iproject.herokuapp.com",
+    // url: "http://localhost:3000",
     paymentUrl: "",
   },
   mutations: {
@@ -29,7 +30,11 @@ export default new Vuex.Store({
     },
     MUTATE_PAYMENT_URL(state, payload) {
       state.paymentUrl = payload
-    }
+    },
+    MUTATE_ORDERS_HISTORY(state,payload) {
+      state.currentUserOrdersHistory = payload
+    },
+
   },
   actions: {
     async dologin(context, payload) {
@@ -121,7 +126,7 @@ export default new Vuex.Store({
         })
         return resp.data
       } catch (error) {
-        // console.log(error,"<<<<<<<<");
+        console.log(error,"<<<<<<<<");
         return error.response.data.message
       }
     },
@@ -137,6 +142,19 @@ export default new Vuex.Store({
         } catch (error) {
           return error.response.data.message
         }
+    },
+    async fectchOrderHistory(context) {
+      try {
+        const resp = await axios.get(`${context.state.url}/order/history`,{
+        headers:{
+          access_token: localStorage.access_token
+        }
+      })
+      context.commit("MUTATE_ORDERS_HISTORY", resp.data)
+      return resp.data
+      } catch (error) {
+        return error.response.data.message
+      }
     },
     async midtransPayment(context,payload) {
       try {

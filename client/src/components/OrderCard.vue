@@ -15,7 +15,10 @@ export default {
   methods:{
     async payment(id){
       try {
-        let orderId = id+this.order.customerName[0]+this.order.orderDestination[0]
+        let orderId = id+ "-" +this.order.customerName[0]+this.order.orderDestination[0]
+        let orderIdATail = (String(Date.now())).slice(8)
+        orderId = orderId + orderIdATail;
+
         const payload = {
           orderId,
           amount: this.order.totalPrice

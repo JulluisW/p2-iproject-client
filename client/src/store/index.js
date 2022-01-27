@@ -11,7 +11,7 @@ export default new Vuex.Store({
     currentProducts: [],
     currentUserOrders:[],
     // url: "https://e-bon-iproject.herokuapp.com"
-    url: "http://localhost:3000",
+    url: "https://e-bon-iproject.herokuapp.com",
     paymentUrl: "",
   },
   mutations: {
